@@ -80,7 +80,8 @@ var ARCarDemo = createReactClass({
           </ViroNode>
 
           <Viro3DObject
-            scale={[0, 0, 0]}
+            position={[0,0.1,0]}
+            scale={[10000, 100, 100000]}
             source={require('./res/tesla/object_car.obj')}
             resources={[require('./res/tesla/object_car.mtl'),
                         ]}
