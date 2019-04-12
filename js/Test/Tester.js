@@ -54,7 +54,7 @@ export class Tester extends Component {
         >
           <ViroNode>
               <ViroNode
-                  opacity={0} position={[-0.3, -0.6, 0]}
+                  opacity={0} position={[-0.4, -1.2, 0]}
                   animation={{
                     name:'animateImage',
                     run: this.state.displayText

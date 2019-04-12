@@ -27,7 +27,8 @@ var sharedProps = {
 var InitialARScene = require('./js/Test/Tester');
 
 var UNSET = "UNSET";
-var AR_NAVIGATOR_TYPE = "AR";
+var AR_TEXT = "AR_TEXT";
+var AR_CAR = "AR_CAR";
 // This determines which type of experience to launch in, or UNSET, if the user should
 // be presented with a choice of AR or VR. By default, we offer the user a choice.
 var defaultNavigatorType = UNSET;
@@ -51,7 +52,11 @@ export default class ARDemo extends Component {
   render() {
     if (this.state.navigatorType == UNSET) {
       return this._getExperienceSelector();
-    } else if (this.state.navigatorType == AR_NAVIGATOR_TYPE) {
+    } else if (this.state.navigatorType === AR_CAR) {
+      InitialARScene = require('./js/ARCarDemo/ARCarDemo');
+      return this._getARNavigator();
+    }else if(this.state.navigatorType === AR_TEXT){
+      InitialARScene = require('./js/Test/Tester');
       return this._getARNavigator();
     }
   }
@@ -67,10 +72,16 @@ export default class ARDemo extends Component {
           </Text>
 
           <TouchableHighlight style={localStyles.buttons}
-            onPress={this._getExperienceButtonOnPress(AR_NAVIGATOR_TYPE)}
+            onPress={this._getExperienceButtonOnPress(AR_TEXT)}
             underlayColor={'#68a0ff'} >
 
-            <Text style={localStyles.buttonText}>AR</Text>
+            <Text style={localStyles.buttonText}>AR Text</Text>
+          </TouchableHighlight>
+          <TouchableHighlight style={localStyles.buttons}
+            onPress={this._getExperienceButtonOnPress(AR_CAR)}
+            underlayColor={'#68a0ff'} >
+
+            <Text style={localStyles.buttonText}>AR Car</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -79,6 +90,7 @@ export default class ARDemo extends Component {
 
   // Returns the ViroARSceneNavigator which will start the AR experience
   _getARNavigator() {
+    
     return (
       <ViroARSceneNavigator {...this.state.sharedProps}
         initialScene={{scene: InitialARScene}} />
