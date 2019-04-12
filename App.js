@@ -29,6 +29,7 @@ var InitialARScene = require('./js/Test/Tester');
 var UNSET = "UNSET";
 var AR_TEXT = "AR_TEXT";
 var AR_CAR = "AR_CAR";
+var AR_CART = "AR_CART"
 // This determines which type of experience to launch in, or UNSET, if the user should
 // be presented with a choice of AR or VR. By default, we offer the user a choice.
 var defaultNavigatorType = UNSET;
@@ -58,6 +59,9 @@ export default class ARDemo extends Component {
     }else if(this.state.navigatorType === AR_TEXT){
       InitialARScene = require('./js/Test/Tester');
       return this._getARNavigator();
+    }else if(this.state.navigatorType === AR_CART){
+      InitialARScene = require('./js/ARBuyCart/ARBuyCart');
+      return this._getARNavigator();
     }
   }
 
@@ -82,6 +86,12 @@ export default class ARDemo extends Component {
             underlayColor={'#68a0ff'} >
 
             <Text style={localStyles.buttonText}>AR Car</Text>
+          </TouchableHighlight>
+          <TouchableHighlight style={localStyles.buttons}
+            onPress={this._getExperienceButtonOnPress(AR_CART)}
+            underlayColor={'#68a0ff'} >
+
+            <Text style={localStyles.buttonText}>AR Cart</Text>
           </TouchableHighlight>
         </View>
       </View>
