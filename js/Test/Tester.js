@@ -47,35 +47,46 @@ export class Tester extends Component {
       <ViroNode>
         <ViroARImageMarker target={"testImage"}
           onAnchorFound={
-            () => this.setState({
+            () => { this.setState({
                 displayText: true
-            })}
+            }) 
+            alert('found')}}
         >
-        <ViroNode key="card">
-            <ViroNode
-                opacity={0} position={[0, -0.02, 0]}
-                animation={{
-                  name:'animateImage',
-                  run: this.state.displayText
-                  }}
-            >
-              <ViroFlexView
-                    rotation={[-90, 0, 0]}
-                    height={0.03}
-                    width={0.05}
-                    style={styles.card}
+          <ViroNode>
+              <ViroNode
+                  opacity={0} position={[-0.3, -0.6, 0]}
+                  animation={{
+                    name:'animateImage',
+                    run: this.state.displayText
+                    }}
               >
                 <ViroFlexView
-                  style={styles.cardWrapper}
+                      rotation={[-90, 0, 0]}
+                      height={0.03}
+                      width={0.05}
+                      style={styles.card}
                 >
-                  <ViroText
-                    textClipMode="None"
-                    text="I Got This"
-                    scale={[.015, .015, .015]}
-                    style={styles.textStyle}
-                  />
+                  <ViroFlexView style={styles.cardWrapper}>
+                    <ViroText
+                        textClipMode="None"
+                        text="Planet Earth"
+                        scale={[.015, .015, .015]}
+                        style={styles.textStyle}
+                      />
+                      <ViroText
+                        textClipMode="None"
+                        text="R1,000.00"
+                        scale={[.015, .015, .015]}
+                        style={styles.textStyle}
+                      />
                   </ViroFlexView>
-              </ViroFlexView>
+                  <ViroText
+                        textClipMode="None"
+                        text="A Delious Piece of Planet"
+                        scale={[.015, .015, .015]}
+                        style={styles.textStyle}
+                      />
+                </ViroFlexView>
             </ViroNode>
           </ViroNode>
         </ViroARImageMarker>
