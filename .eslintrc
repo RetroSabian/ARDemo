@@ -1,0 +1,63 @@
+{
+    "parser": "babel-eslint",
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:jest/recommended"
+    ],
+    "plugins": [
+        "import",
+        "react-extra"
+    ],
+    "rules": {
+        "no-var": "error",
+        "indent": "error",
+        "semi": "error",
+        "curly": "error",
+        "no-extra-parens": "error",
+        "quotes": ["error", "single"],
+        "require-atomic-updates": "error",
+        "array-callback-return": "error",
+        "default-case": "error",
+        "eqeqeq": "error",
+        "no-empty-function": "error",
+        "no-fallthrough": "off",
+        "no-invalid-this": "error",
+        "no-lone-blocks": "error",
+        "no-magic-numbers": "error",
+        "no-multi-spaces": "error",
+        "no-param-reassign": "error",
+        "no-return-assign": "error",
+        "require-await": "error",
+        "array-bracket-spacing": ["error", "always"],
+        "block-spacing": "error",
+        "brace-style": "error",
+        "implicit-arrow-linebreak": ["error", "beside"],
+        "jsx-quotes": ["error", "prefer-double"],
+        "object-curly-spacing": ["error", "always"],
+        "keyword-spacing": "error",
+        "no-multiple-empty-lines": ["error", {"max": 1, "maxBOF": 0}],
+        "eol-last": ["error", "never"],
+        "jest/no-disabled-tests": "off",
+        "import/no-unresolved": "error",
+        "import/named": "error",
+        "import/default": "error",
+        "import/no-useless-path-segments": "error",
+        "import/first": "error",
+        "import/no-duplicates": "error",
+        "import/newline-after-import": "error",
+        "react-extra/no-inline-styles": "error",
+        "space-infix-ops": "error",
+        "key-spacing": "error"
+    },
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
+    }
+}
