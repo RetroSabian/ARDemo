@@ -6,6 +6,7 @@ import {
     ViroARImageMarker,
     ViroNode,
     Viro3DObject,
+    ViroVideo,
     ViroARTrackingTargets,
     ViroAnimations
 } from 'react-viro';
@@ -56,6 +57,14 @@ class ARDisplay extends Component {
                         source={Cart}
                         type="OBJ"
                         animation={{ name: this.state.animationType, run: this.state.animate, loop: true, onFinish: this._onAnimationFinished }} />
+                    <ViroVideo
+                        source={require('./res/Videos/hands.mp4')}
+                        height={2}
+                        width={2}
+                        border={2}
+                        loop={true}
+                        position={[Constants.zero,Constants.zero,-5]}
+                    />
                 </ViroNode>
             </ViroARImageMarker>
         </ViroARScene>
