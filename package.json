@@ -8,6 +8,7 @@
     "lint": "node_modules/.bin/eslint js/ --ext .js --ext .json --ext .jsx"
   },
   "dependencies": {
+    "lottie-react-native": "^2.6.1",
     "react": "16.8.3",
     "react-native": "0.59.4",
     "react-redux": "^7.0.2",

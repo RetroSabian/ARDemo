@@ -11,22 +11,21 @@ import {
 } from 'react-viro';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as UiActions from './redux/UI/UIActions';
-import RomanyMarker from './res/Markers/Romany.jpg';
-import Cart from './res/Cart/cart.obj';
-import * as Constants from './constant';
+import * as UiActions from '../redux/UI/UIActions';
+import RomanyMarker from '../res/Markers/Romany.jpg';
+import Cart from '../res/Cart/cart.obj';
+import * as Constants from '../constant';
 import PropTypes from 'prop-types';
 
 class ARDisplay extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             text: 'Initializing AR...',
             playAnim: false,
             animate: false,
             animationType: 'spawn'
         };
-        this._onInitialized = this._onInitialized.bind(this);
         this._onAnchorFound = this._onAnchorFound.bind(this);
         this._onAnimationFinished = this._onAnimationFinished.bind(this);
         this.handleclick = this.handleclick.bind(this);
@@ -49,7 +48,7 @@ class ARDisplay extends Component {
     }
 
     render() {
-        return <ViroARScene>
+        return <ViroARScene onTrackingUpdated={this._onInitialized}>
             <ViroAmbientLight color="#ffffff" intensity={200}/>
             <ViroARImageMarker target={'romany'} onAnchorFound={this._onAnchorFound}> 
                 <ViroNode
@@ -104,4 +103,4 @@ const mapActionsToProps = (dispatch) => ({
     uiActions: bindActionCreators(UiActions, dispatch)
 });
 
-export default connect(mapStateToProps, mapActionsToProps)(ARDisplay);
+export default connect( mapStateToProps, mapActionsToProps ) (ARDisplay);
