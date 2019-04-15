@@ -10,9 +10,13 @@ import {
     ViroARTrackingTargets,
     ViroAnimations
 } from 'react-viro';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as UiActions from './redux/UI/UIActions';
 import RomanyMarker from './res/Markers/Romany.jpg';
 import Cart from './res/Cart/cart.obj';
 import * as Constants from './constant';
+import PropTypes from 'prop-types';
 
 class ARDisplay extends Component {
     constructor() {
@@ -71,17 +75,15 @@ class ARDisplay extends Component {
         ;
     }
 
-    _onInitialized(state) {
+    _onTrackingUpdated(state) {
+        let trackingNormal = false;
         if (state === ViroConstants.TRACKING_NORMAL) {
-            this.setState({
-                text: ''
-            });
-        } else if (state === ViroConstants.TRACKING_NONE) {
-            // Handle loss of tracking
-        }
+            trackingNormal = true;
+        } 
+        this.props.uiActions.dispatchARTrackingInitialized(trackingNormal);
     }
 }
-
+ 
 ViroARTrackingTargets.createTargets({
     romany: {
         source: RomanyMarker,
@@ -89,7 +91,7 @@ ViroARTrackingTargets.createTargets({
         physicalWidth: 0.165 // real world width in meters
     }
 });
-  
+
 ViroAnimations.registerAnimations({
     spawn: { properties: { scaleX: Constants.pointOne, scaleY: Constants.pointOne, scaleZ: Constants.pointOne, },
         duration: 500, easing: 'bounce' },
@@ -97,4 +99,18 @@ ViroAnimations.registerAnimations({
         duration: 500 }
 });
 
-export default ARDisplay;
+ARDisplay.propTypes = {
+    uiActions: PropTypes.shape({
+        dispatchARTrackingInitialized: PropTypes.func
+    })
+};
+
+const mapStateToProps = (state) => ({
+    UIState: state.UIState
+});
+
+const mapActionsToProps = (dispatch) => ({
+    uiActions: bindActionCreators(UiActions, dispatch)
+});
+
+export default connect(mapStateToProps, mapActionsToProps)(ARDisplay);
