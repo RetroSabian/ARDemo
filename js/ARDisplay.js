@@ -60,7 +60,7 @@ class ARDisplay extends Component {
                     width={15} 
                     height={5} 
                     extrusionDepth={8}
-                    materials={["frontMaterial", "backMaterial", "sideMaterial"]}
+                    materials={[ 'frontMaterial', 'backMaterial', 'sideMaterial' ]}
                     text="Romany Creams" 
                 />
                 <ViroNode
