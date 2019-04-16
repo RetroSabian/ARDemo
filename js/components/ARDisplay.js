@@ -6,20 +6,24 @@ import {
     ViroARImageMarker,
     ViroNode,
     Viro3DObject,
+    ViroVideo,
     ViroARTrackingTargets,
+    ViroText,
+    ViroMaterials,
     ViroAnimations
 } from 'react-viro';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as UIActions from '../redux/UI/UIActions';
+import * as UiActions from '../redux/UI/UIActions';
 import RomanyMarker from '../res/Markers/Romany.jpg';
 import Cart from '../res/Cart/cart.obj';
-import * as Constants from '../constant';
+import * as Constants from '../Constants/constant';
+import { Style } from '../Constants/styleConstants';
 import PropTypes from 'prop-types';
 
 class ARDisplay extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             text: 'Initializing AR...',
             playAnim: false,
@@ -48,19 +52,29 @@ class ARDisplay extends Component {
         });
     }
 
-    _onTrackingUpdated(state, reason) {
+    _onTrackingUpdated(state) {
         let trackingNormal = false;
-        if (state == ViroConstants.TRACKING_NORMAL) {
+        if (state === ViroConstants.TRACKING_NORMAL) {
             trackingNormal = true;
         } 
-        alert(trackingNormal + " SPLIT "+this.props.UIState.TrackerInitialized);
         this.props.uiActions.ARTrackingInitialized(trackingNormal);
     }
 
     render() {
-        return <ViroARScene onTrackingUpdated={this._onTrackingUpdated}>
+        
+        return <ViroARScene onTrackingUpdated= {this._onTrackingUpdated}>
             <ViroAmbientLight color="#ffffff" intensity={200}/>
             <ViroARImageMarker target={'romany'} onAnchorFound={this._onAnchorFound}> 
+                <ViroText 
+                    fontSize={12}
+                    style={Style.ProductName} 
+                    position={[ Constants.zero, Constants.zero, Constants.negativeFive ]}
+                    width={15} 
+                    height={5} 
+                    extrusionDepth={8}
+                    materials={[ 'frontMaterial', 'backMaterial', 'sideMaterial' ]}
+                    text="Romany Creams" 
+                />
                 <ViroNode
                     position={[ Constants.pointOne, Constants.pointOne, Constants.zero ]}>
                     <Viro3DObject
@@ -69,6 +83,14 @@ class ARDisplay extends Component {
                         source={Cart}
                         type="OBJ"
                         animation={{ name: this.state.animationType, run: this.state.animate, loop: true, onFinish: this._onAnimationFinished }} />
+                    <ViroVideo
+                        source={require('../res/Videos/hands.mp4')}
+                        height={2}
+                        width={2}
+                        border={2}
+                        loop={true}
+                        position={[ Constants.zero,Constants.zero, Constants.negativeFive ]}
+                    />
                 </ViroNode>
             </ViroARImageMarker>
         </ViroARScene>
@@ -97,12 +119,24 @@ ARDisplay.propTypes = {
     })
 };
 
+ViroMaterials.createMaterials({
+    frontMaterial: {
+        diffuseColor: '#FFFFFF',
+    },
+    backMaterial: {
+        diffuseColor: '#FF0000',
+    },
+    sideMaterial: {
+        diffuseColor: '#0000FF',
+    },
+});
+
 const mapStateToProps = (state) => ({
     UIState: state.UIState
 });
 
 const mapActionsToProps = (dispatch) => ({
-    uiActions: bindActionCreators(UIActions, dispatch)
+    uiActions: bindActionCreators(UiActions, dispatch)
 });
 
-export default connect( mapStateToProps, mapActionsToProps )(ARDisplay);
+export default connect(mapStateToProps, mapActionsToProps)(ARDisplay);

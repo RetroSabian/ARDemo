@@ -5,7 +5,7 @@ import { TouchableHighlight,
     Easing,
     View,
 } from 'react-native';
-import * as Constants from '../constant';
+import * as Constants from '../Constants/constant';
 import constants from 'jest-haste-map/build/constants';
 
 class SuccessAnimation extends Component {
