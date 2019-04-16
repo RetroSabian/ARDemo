@@ -1,6 +1,9 @@
 const InitialState = {
     UIState: {
         TrackerInitialized: false
+    },
+    CartState: {
+        InCart: []
     }
 };
 
