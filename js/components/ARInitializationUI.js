@@ -5,7 +5,6 @@ import { View,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import Animation from 'lottie-react-native';
 import SuccessAnimation from './SuccessAnimation';
 
 class ARInitializationUI extends Component {
@@ -30,18 +29,6 @@ class ARInitializationUI extends Component {
         if (!this.props.UIState.TrackerInitialized) {
             return (
                 <View pointerEvents={'none'} style={this.props.style}>
-                    {/* <View style={{ width: 172.075, height: 100 }}>
-                        <Animation
-                            ref={this._setAnimation}
-                            style={{
-                                width: this.props.width,
-                                height: this.props.height,
-                                alignSelf: 'center'
-                            }}
-                            loop={true}
-                            source={require('../res/animations/data.json')}
-                        />
-                    </View> */}
                     <Image source={this.state.initializing_text_src_img}/>
                 </View>
             );
