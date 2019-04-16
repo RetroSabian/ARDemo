@@ -17,4 +17,12 @@ export const styles = StyleSheet.create({
         textAlignVertical: 'center',
         textAlign: 'center',  
     },
+    boldFont: {
+        color: '#FFFFFF',
+        flex: 1,
+        textAlignVertical: 'center',
+        textAlign: 'center',
+        fontWeight: 'bold',
+    } 
+
 });

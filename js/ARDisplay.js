@@ -8,6 +8,8 @@ import {
     Viro3DObject,
     ViroVideo,
     ViroARTrackingTargets,
+    ViroText,
+    ViroMaterials,
     ViroAnimations
 } from 'react-viro';
 import RomanyMarker from './res/Markers/Romany.jpg';
@@ -46,9 +48,21 @@ class ARDisplay extends Component {
     }
 
     render() {
+        
         return <ViroARScene>
             <ViroAmbientLight color="#ffffff" intensity={200}/>
             <ViroARImageMarker target={'romany'} onAnchorFound={this._onAnchorFound}> 
+
+                <ViroText 
+                    fontSize={12}
+                    style={{color: '#FFFFFF',flex: 1,textAlignVertical: 'center',textAlign: 'center',fontWeight: 'bold'}} 
+                    position={[0, 0, -5]}
+                    width={15} 
+                    height={5} 
+                    extrusionDepth={8}
+                    materials={["frontMaterial", "backMaterial", "sideMaterial"]}
+                    text="Romany Creams" 
+                />
                 <ViroNode
                     position={[ Constants.pointOne, Constants.pointOne, Constants.zero ]}>
                     <Viro3DObject
@@ -63,8 +77,9 @@ class ARDisplay extends Component {
                         width={2}
                         border={2}
                         loop={true}
-                        position={[Constants.zero,Constants.zero,-5]}
+                        position={[ Constants.zero,Constants.zero,-5]}
                     />
+                    
                 </ViroNode>
             </ViroARImageMarker>
         </ViroARScene>
@@ -95,6 +110,18 @@ ViroAnimations.registerAnimations({
         duration: 500, easing: 'bounce' },
     rotation: { properties: { rotateY: '+=45' },
         duration: 500 }
+});
+
+ViroMaterials.createMaterials({
+    frontMaterial: {
+        diffuseColor: '#FFFFFF',
+    },
+    backMaterial: {
+        diffuseColor: '#FF0000',
+    },
+    sideMaterial: {
+        diffuseColor: '#0000FF',
+    },
 });
 
 export default ARDisplay;
