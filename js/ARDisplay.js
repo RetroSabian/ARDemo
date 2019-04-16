@@ -120,6 +120,18 @@ ARDisplay.propTypes = {
     })
 };
 
+ViroMaterials.createMaterials({
+    frontMaterial: {
+        diffuseColor: '#FFFFFF',
+    },
+    backMaterial: {
+        diffuseColor: '#FF0000',
+    },
+    sideMaterial: {
+        diffuseColor: '#0000FF',
+    },
+});
+
 const mapStateToProps = (state) => ({
     UIState: state.UIState
 });
