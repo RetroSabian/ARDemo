@@ -8,7 +8,7 @@ export default (state = InitialState.UIState, action) => {
             ...state,
             UIState: {
                 ...state.UIState,
-                TrackerInitialized: action.TrackerInitialized
+                TrackerInitialized: action.UIState.TrackerInitialized
             }
         };
     default:
