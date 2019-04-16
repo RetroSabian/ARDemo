@@ -4,6 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import * as Constants from '../constant';
 import Display from './ARDisplay';
 import ARInitializationUI from './ARInitializationUI';
+import CartList from './CartList';
 
 export default class MainPage extends Component {
     constructor(props) {
@@ -16,6 +17,9 @@ export default class MainPage extends Component {
                 <ViroARSceneNavigator apiKey = {Constants.apiKey}
                     initialScene={{ scene: Display }} />
                 <ARInitializationUI style={localStyles.initializationUI}/>
+                <View style={localStyles.listView}>
+                    <CartList/>
+                </View>
             </View>
         );
     }

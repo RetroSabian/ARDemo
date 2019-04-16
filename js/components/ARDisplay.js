@@ -11,7 +11,7 @@ import {
 } from 'react-viro';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as UiActions from '../redux/UI/UIActions';
+import * as UIActions from '../redux/UI/UIActions';
 import RomanyMarker from '../res/Markers/Romany.jpg';
 import Cart from '../res/Cart/cart.obj';
 import * as Constants from '../constant';
@@ -29,6 +29,7 @@ class ARDisplay extends Component {
         this._onAnchorFound = this._onAnchorFound.bind(this);
         this._onAnimationFinished = this._onAnimationFinished.bind(this);
         this.handleclick = this.handleclick.bind(this);
+        this._onTrackingUpdated = this._onTrackingUpdated.bind(this);
     }
 
     _onAnimationFinished(){
@@ -47,8 +48,17 @@ class ARDisplay extends Component {
         });
     }
 
+    _onTrackingUpdated(state, reason) {
+        let trackingNormal = false;
+        if (state == ViroConstants.TRACKING_NORMAL) {
+            trackingNormal = true;
+        } 
+        alert(trackingNormal + " SPLIT "+this.props.UIState.TrackerInitialized);
+        this.props.uiActions.ARTrackingInitialized(trackingNormal);
+    }
+
     render() {
-        return <ViroARScene onTrackingUpdated={this._onInitialized}>
+        return <ViroARScene onTrackingUpdated={this._onTrackingUpdated}>
             <ViroAmbientLight color="#ffffff" intensity={200}/>
             <ViroARImageMarker target={'romany'} onAnchorFound={this._onAnchorFound}> 
                 <ViroNode
@@ -63,14 +73,6 @@ class ARDisplay extends Component {
             </ViroARImageMarker>
         </ViroARScene>
         ;
-    }
-
-    _onTrackingUpdated(state) {
-        let trackingNormal = false;
-        if (state === ViroConstants.TRACKING_NORMAL) {
-            trackingNormal = true;
-        } 
-        this.props.uiActions.dispatchARTrackingInitialized(trackingNormal);
     }
 }
  
@@ -91,7 +93,7 @@ ViroAnimations.registerAnimations({
 
 ARDisplay.propTypes = {
     uiActions: PropTypes.shape({
-        dispatchARTrackingInitialized: PropTypes.func
+        ARTrackingInitialized: PropTypes.func
     })
 };
 
@@ -100,7 +102,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionsToProps = (dispatch) => ({
-    uiActions: bindActionCreators(UiActions, dispatch)
+    uiActions: bindActionCreators(UIActions, dispatch)
 });
 
-export default connect( mapStateToProps, mapActionsToProps ) (ARDisplay);
+export default connect( mapStateToProps, mapActionsToProps )(ARDisplay);
