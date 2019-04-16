@@ -8,13 +8,26 @@ class CartList extends Component {
         super(props);
     }
     render(){
-        
+        {this.props.CartState.CartList ?
+            <View>
+                
+            </View>: null
+        }
 }
 
 CartList.propTypes = {
+    CartState: PropTypes.shape({
+        inCart: PropTypes.array
+    })
 };
 
 const styles = StyleSheet.create({
 });
-    }
-export default CartList;
+}
+
+const mapStateToProps = (state) => ({
+    CartState: state.CartState
+});
+
+
+export default connect (mapStateToProps)(CartList);
