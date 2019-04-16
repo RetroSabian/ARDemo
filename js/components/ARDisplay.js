@@ -6,7 +6,6 @@ import {
     ViroARImageMarker,
     ViroNode,
     Viro3DObject,
-    ViroVideo,
     ViroARTrackingTargets,
     ViroText,
     ViroMaterials,
@@ -15,11 +14,13 @@ import {
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as UiActions from '../redux/UI/UIActions';
-import RomanyMarker from '../res/Markers/Romany.jpg';
 import Cart from '../res/Cart/cart.obj';
 import * as Constants from '../Constants/constant';
 import { Style } from '../Constants/styleConstants';
 import PropTypes from 'prop-types';
+import { ProductArray } from '../Constants/ProductConstants';
+import RomanyCreams from '../res/Markers/Romany.jpg';
+import SpecialK from '../res/Markers/SpecialK.jpg';
 
 class ARDisplay extends Component {
     constructor() {
@@ -59,52 +60,57 @@ class ARDisplay extends Component {
         } 
         this.props.uiActions.ARTrackingInitialized(trackingNormal);
     }
-
     render() {
         
         return <ViroARScene onTrackingUpdated= {this._onTrackingUpdated}>
             <ViroAmbientLight color="#ffffff" intensity={200}/>
-            <ViroARImageMarker target={'romany'} onAnchorFound={this._onAnchorFound}> 
-                <ViroText 
-                    fontSize={12}
-                    style={Style.ProductName} 
-                    position={[ Constants.zero, Constants.zero, Constants.negativeFive ]}
-                    width={15} 
-                    height={5} 
-                    extrusionDepth={8}
-                    materials={[ 'frontMaterial', 'backMaterial', 'sideMaterial' ]}
-                    text="Romany Creams" 
-                />
-                <ViroNode
-                    position={[ Constants.pointOne, Constants.pointOne, Constants.zero ]}>
-                    <Viro3DObject
-                        onClick={this.handleclick}
-                        scale={[ Constants.one, Constants.one , Constants.one ]}
-                        source={Cart}
-                        type="OBJ"
-                        animation={{ name: this.state.animationType, run: this.state.animate, loop: true, onFinish: this._onAnimationFinished }} />
-                    <ViroVideo
-                        source={require('../res/Videos/hands.mp4')}
-                        height={2}
-                        width={2}
-                        border={2}
-                        loop={true}
-                        position={[ Constants.zero,Constants.zero, Constants.negativeFive ]}
+            {
+                ProductArray.map((product, index) => <ViroARImageMarker target={product.concatName} onAnchorFound={this._onAnchorFound} key={index}> 
+                    <ViroText 
+                        fontSize={12}
+                        style={Style.ProductName} 
+                        position={[ Constants.zero, Constants.zero, Constants.negativeFive ]}
+                        width={15} 
+                        height={5} 
+                        extrusionDepth={8}
+                        materials={[ 'frontMaterial', 'backMaterial', 'sideMaterial' ]}
+                        text= {product.name} 
                     />
-                </ViroNode>
-            </ViroARImageMarker>
-        </ViroARScene>
-        ;
+                    <ViroNode
+                        position={[ Constants.pointOne, Constants.pointOne, Constants.zero ]}>
+                        <Viro3DObject
+                            onClick={this.handleclick}
+                            scale={[ Constants.one, Constants.one , Constants.one ]}
+                            source={Cart}
+                            type="OBJ"
+                            animation={{ name: this.state.animationType, run: this.state.animate, loop: true, onFinish: this._onAnimationFinished }} />
+                    </ViroNode>
+                </ViroARImageMarker>) 
+            }
+        </ViroARScene>;
     }
 }
  
-ViroARTrackingTargets.createTargets({
-    romany: {
-        source: RomanyMarker,
+ViroARTrackingTargets.createTargets(
+    // ProductArray.map((product) => ({
+    //     [product.concatName]: {
+    //         source: product.imageMarker,
+    //         orientation: 'Up',
+    //         physicalWidth: 0.165
+    //     }
+    // }))
+    { Romany_Creams: {
+        source: RomanyCreams,
         orientation: 'Up',
         physicalWidth: 0.165 // real world width in meters
+    },
+    Special_K: {
+        source: SpecialK,
+        orientation: 'Up',
+        physicalWidth: 0.165 // real world width in meters
+    },
     }
-});
+);
 
 ViroAnimations.registerAnimations({
     spawn: { properties: { scaleX: Constants.pointOne, scaleY: Constants.pointOne, scaleZ: Constants.pointOne, },
