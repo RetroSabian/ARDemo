@@ -1,14 +1,6 @@
 import * as Types from './CartActionTypes';
 import * as Constants from '../../Constants/constant';
 
-export const AddToCart = ( array, name, price ) => {
-    if (array.find(product => product.name === name)) {
-        AddToCartExists(array, name);
-    } else {
-        AddToCartNew(array, name, price);
-    }
-};
-
 export const AddToCartNew = (array, name, price) => (dispatch) => {
     const value = array.push({ 'name': name, 'price': price, 'qty': Constants.one });
     dispatch(AddToCartAC(value));
