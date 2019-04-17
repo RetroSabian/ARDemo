@@ -10,4 +10,5 @@ export const pointOne = 0.1;
 export const pointEight = 0.8;
 export const one = 1;
 export const onePointTwo = 1.2;
+export const ten = 10;
 export const ninety = 90;
