@@ -76,11 +76,21 @@ class ARDisplay extends Component {
                         materials={[ 'frontMaterial', 'backMaterial', 'sideMaterial' ]}
                         text= {product.name} 
                     />
+                    <ViroText 
+                        fontSize={12}
+                        style={Style.ProductName} 
+                        position={[ Constants.zero, Constants.zero, Constants.negativeFive ]}
+                        width={15} 
+                        height={5} 
+                        extrusionDepth={8}
+                        materials={[ 'frontMaterial', 'backMaterial', 'sideMaterial' ]}
+                        text= {product.price} 
+                    />
                     <ViroNode
                         position={[ Constants.pointOne, Constants.pointOne, Constants.zero ]}>
                         <Viro3DObject
                             onClick={this.handleclick}
-                            scale={[ Constants.one, Constants.one , Constants.one ]}
+                            scale={[ Constants.one, Constants.zero, Constants.one ]}
                             source={Cart}
                             type="OBJ"
                             animation={{ name: this.state.animationType, run: this.state.animate, loop: true, onFinish: this._onAnimationFinished }} />
