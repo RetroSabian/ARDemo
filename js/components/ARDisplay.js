@@ -19,8 +19,6 @@ import * as Constants from '../Constants/constant';
 import { Style } from '../Constants/styleConstants';
 import PropTypes from 'prop-types';
 import { ProductArray } from '../Constants/ProductConstants';
-import RomanyCreams from '../res/Markers/Romany.jpg';
-import SpecialK from '../res/Markers/SpecialK.jpg';
 
 class ARDisplay extends Component {
     constructor() {
@@ -51,6 +49,7 @@ class ARDisplay extends Component {
         this.setState({
             animate: true,
         });
+        alert('found');
     }
 
     _onTrackingUpdated(state) {
@@ -102,24 +101,14 @@ class ARDisplay extends Component {
 }
  
 ViroARTrackingTargets.createTargets(
-    // ProductArray.map((product) => ({
-    //     [product.concatName]: {
-    //         source: product.imageMarker,
-    //         orientation: 'Up',
-    //         physicalWidth: 0.165
-    //     }
-    // }))
-    { Romany_Creams: {
-        source: RomanyCreams,
-        orientation: 'Up',
-        physicalWidth: 0.165 // real world width in meters
-    },
-    Special_K: {
-        source: SpecialK,
-        orientation: 'Up',
-        physicalWidth: 0.165 // real world width in meters
-    },
-    }
+    ProductArray.reduce((accObject, product) => {
+        accObject[product.concatName] = {
+            source: product.source,
+            orientation: product.orientation,
+            physicalWidth: product.physicalWidth
+        };
+        return accObject;
+    }, {})
 );
 
 ViroAnimations.registerAnimations({
