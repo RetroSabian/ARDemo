@@ -1,6 +1,34 @@
 import * as Types from './CartActionTypes';
+import * as Constants from '../../Constants/constant';
 
-export const AddToCart = (value) => (dispatch) => dispatch(AddToCartAC(value));
+export const AddToCart = ( array, name, price ) => {
+    if (array.find(product => product.name === name)) {
+        AddToCartExists(array, name);
+    } else {
+        AddToCartNew(array, name, price);
+    }
+};
+
+export const AddToCartNew = (array, name, price) => (dispatch) => {
+    const value = array.push({ 'name': name, 'price': price, 'qty': Constants.one });
+    dispatch(AddToCartAC(value));
+};
+
+export const AddToCartExists = (array, name) => (dispatch) => {
+    // const value = array.map( (product ) => { 
+    //     if (product.name !== name){
+    //         return { ...product };
+    //     } else {
+    //         return { ...product,
+    //             qty: product.qty + Constants.one };
+    //     }
+    // });
+    const value = array.map((product) => ({
+        ...product, 
+        qty: product.name === name ? ++product.qty : product.qty
+    }));
+    dispatch(AddToCartAC(value));
+};
 
 export const AddToCartAC = (value) => {
     return {

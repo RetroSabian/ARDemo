@@ -14,6 +14,7 @@ import {
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as UiActions from '../redux/UI/UIActions';
+import * as CartActions from '../redux/Cart/CartActions';
 import Cart from '../res/Cart/cart.obj';
 import * as Constants from '../Constants/constant';
 import { Style } from '../Constants/styleConstants';
@@ -25,7 +26,6 @@ class ARDisplay extends Component {
         super();
         this.state = {
             text: 'Initializing AR...',
-            playAnim: false,
             animate: false,
             animationType: 'spawn'
         };
@@ -41,8 +41,12 @@ class ARDisplay extends Component {
         });
     }
 
-    handleclick(){
-        alert('On Click Event');  
+    handleclick(name, price){
+        if (this.props.CartState.InCart.find(product => product.name === name)) {
+            this.props.cartActions.AddToCartExists(this.props.CartState.InCart, name);
+        } else {
+            this.props.cartActions.AddToCartNew(this.props.CartState.InCart, name, price);
+        }
     }
 
     _onAnchorFound() {
@@ -78,7 +82,7 @@ class ARDisplay extends Component {
                     <ViroNode
                         position={[ Constants.pointOne, Constants.pointOne, Constants.zero ]}>
                         <Viro3DObject
-                            onClick={this.handleclick}
+                            onClick={() => this.handleclick(product.name, product.price)}
                             scale={[ Constants.one, Constants.one , Constants.one ]}
                             source={Cart}
                             type="OBJ"
@@ -111,6 +115,13 @@ ViroAnimations.registerAnimations({
 ARDisplay.propTypes = {
     uiActions: PropTypes.shape({
         ARTrackingInitialized: PropTypes.func
+    }),
+    cartActions: PropTypes.shape({
+        AddToCartNew: PropTypes.func,
+        AddToCartExists: PropTypes.func
+    }),
+    CartState: PropTypes.shape({
+        InCart: PropTypes.array
     })
 };
 
@@ -127,11 +138,13 @@ ViroMaterials.createMaterials({
 });
 
 const mapStateToProps = (state) => ({
-    UIState: state.UIState
+    UIState: state.UIState,
+    CartState: state.CartState
 });
 
 const mapActionsToProps = (dispatch) => ({
-    uiActions: bindActionCreators(UiActions, dispatch)
+    uiActions: bindActionCreators(UiActions, dispatch),
+    cartActions: bindActionCreators(CartActions, dispatch)
 });
 
 export default connect(mapStateToProps, mapActionsToProps)(ARDisplay);
