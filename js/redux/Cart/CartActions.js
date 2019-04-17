@@ -15,14 +15,6 @@ export const AddToCartNew = (array, name, price) => (dispatch) => {
 };
 
 export const AddToCartExists = (array, name) => (dispatch) => {
-    // const value = array.map( (product ) => { 
-    //     if (product.name !== name){
-    //         return { ...product };
-    //     } else {
-    //         return { ...product,
-    //             qty: product.qty + Constants.one };
-    //     }
-    // });
     const value = array.map((product) => ({
         ...product, 
         qty: product.name === name ? ++product.qty : product.qty
