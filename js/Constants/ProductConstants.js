@@ -8,7 +8,8 @@ export const ProductArray = [
         price: 25.50,
         source: RomanyCreamsImage,
         orientation: 'Up',
-        physicalWidth: 0.15
+        physicalWidth: 0.15,
+        rating: 3
     },
     {
         name: 'Special K Red Berries Cereal Bars',
@@ -16,6 +17,7 @@ export const ProductArray = [
         price: 30.00,
         source: KelloggsImage,
         orientation: 'Up',
-        physicalWidth: 0.18
+        physicalWidth: 0.18,
+        rating: 5
     }
 ];

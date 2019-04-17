@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as UiActions from '../redux/UI/UIActions';
 import Cart from '../res/Cart/cart.obj';
+import Rating from '../res/Cart/Star.obj';
 import * as Constants from '../Constants/constant';
 import { Style } from '../Constants/styleConstants';
 import PropTypes from 'prop-types';
@@ -33,6 +34,7 @@ class ARDisplay extends Component {
         this._onAnimationFinished = this._onAnimationFinished.bind(this);
         this.handleclick = this.handleclick.bind(this);
         this._onTrackingUpdated = this._onTrackingUpdated.bind(this);
+        this._rating = this._rating.bind(this);
     }
 
     _onAnimationFinished(){
@@ -59,8 +61,32 @@ class ARDisplay extends Component {
         } 
         this.props.uiActions.ARTrackingInitialized(trackingNormal);
     }
+    _rating(rating) {
+        let myloop = [];     
+        for (let i = 0; i < rating; i++) {
+            let val = 1;
+            val = val + i;
+            myloop.push(
+                <Viro3DObject key={i}
+                    position={[ Constants.one + val, Constants.zero, Constants.negativeFive ]}
+                    rotation={[ Constants.negativeNinety, Constants.zero, Constants.zero ]}
+                    scale={[ Constants.one, Constants.zero, Constants.one ]}
+                    source={Rating}
+                    type="OBJ"
+                    animation={{ name: this.state.animationType, run: this.state.animate, loop: true, onFinish: this._onAnimationFinished }}
+                    
+                />
+            );
+        }
+        return (
+            <ViroNode>
+                { myloop }
+            </ViroNode>
+            
+        );
+    }
     render() {
-        
+            
         return <ViroARScene onTrackingUpdated= {this._onTrackingUpdated}>
             <ViroAmbientLight color="#ffffff" intensity={200}/>
             {
@@ -75,11 +101,22 @@ class ARDisplay extends Component {
                         materials={[ 'frontMaterial', 'backMaterial', 'sideMaterial' ]}
                         text= {product.name} 
                     />
+                    <ViroText 
+                        fontSize={12}
+                        style={Style.ProductName} 
+                        position={[ Constants.one, Constants.zero, Constants.negativeFive ]}
+                        width={15} 
+                        height={5} 
+                        extrusionDepth={8}
+                        materials={[ 'frontMaterial', 'backMaterial', 'sideMaterial' ]}
+                        text={'R' + product.price.toLocaleString()} 
+                    />
+                    {this._rating(product.rating)}
                     <ViroNode
                         position={[ Constants.pointOne, Constants.pointOne, Constants.zero ]}>
                         <Viro3DObject
                             onClick={this.handleclick}
-                            scale={[ Constants.one, Constants.one , Constants.one ]}
+                            scale={[ Constants.one, Constants.zero, Constants.one ]}
                             source={Cart}
                             type="OBJ"
                             animation={{ name: this.state.animationType, run: this.state.animate, loop: true, onFinish: this._onAnimationFinished }} />
