@@ -1,6 +1,8 @@
 import * as Types from './CartActionTypes';
 import * as Constants from '../../Constants/constant';
 
+export const ToggleCart = (flag) => dispatch => dispatch(ToggleCartAC(flag));
+
 export const AddToCartNew = (array, name, price) => (dispatch) => {
     const value = array.push({ 'name': name, 'price': price, 'qty': Constants.one });
     dispatch(AddToCartAC(value));
@@ -12,6 +14,15 @@ export const AddToCartExists = (array, name) => (dispatch) => {
         qty: product.name === name ? ++product.qty : product.qty
     }));
     dispatch(AddToCartAC(value));
+};
+
+export const ToggleCartAC = (flag) => {
+    return {
+        type: Types.TOGGLE_CART_LIST,
+        CartState: {
+            ShowCartList: flag
+        }
+    };
 };
 
 export const AddToCartAC = (value) => {

@@ -3,7 +3,8 @@ const InitialState = {
         TrackerInitialized: false
     },
     CartState: {
-        InCart: []
+        InCart: [],
+        ShowCartList: false
     }
 };
 

@@ -5,8 +5,10 @@ import * as Constants from '../Constants/constant';
 import Display from './ARDisplay';
 import ARInitializationUI from './ARInitializationUI';
 import CartList from './CartList';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-export default class MainPage extends Component {
+class MainPage extends Component {
     constructor(props) {
         super(props);
     }
@@ -17,9 +19,10 @@ export default class MainPage extends Component {
                 <ViroARSceneNavigator apiKey = {Constants.apiKey}
                     initialScene={{ scene: Display }} />
                 <ARInitializationUI style={localStyles.initializationUI}/>
-                <View style={localStyles.listView}>
-                    <CartList/>
-                </View>
+                {this.props.CartState.ShowCartList ?   
+                    <View style={localStyles.listView}>
+                        <CartList/>
+                    </View> : null}  
             </View>
         );
     }
@@ -50,3 +53,15 @@ const localStyles = StyleSheet.create({
         backgroundColor: '#000000aa'
     }
 });
+
+MainPage.propTypes = {
+    CartState: PropTypes.shape({
+        ShowCartList: PropTypes.bool
+    })
+};
+
+const mapStateToProps = (state) => ({
+    CartState: state.CartState
+});
+
+export default connect(mapStateToProps)(MainPage);

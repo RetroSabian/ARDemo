@@ -12,6 +12,14 @@ export default (state = InitialState.CartState, action) => {
                 inCart: action.inCart
             }
         };
+    case Types.TOGGLE_CART_LIST:
+        return {
+            ...state,
+            CartState: {
+                ...state.CartState,
+                ShowCartList: action.ShowCartList
+            }
+        };
     default:
         return state;
     }
