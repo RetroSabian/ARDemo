@@ -9,7 +9,7 @@ export default (state = InitialState.CartState, action) => {
             ...state,
             CartState: {
                 ...state.CartState,
-                inCart: action.inCart
+                InCart: action.CartState.InCart
             }
         };
     case Types.TOGGLE_CART_LIST:
@@ -17,7 +17,7 @@ export default (state = InitialState.CartState, action) => {
             ...state,
             CartState: {
                 ...state.CartState,
-                ShowCartList: action.ShowCartList
+                ShowCartList: action.CartState
             }
         };
     default:

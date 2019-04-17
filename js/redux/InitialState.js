@@ -4,7 +4,7 @@ const InitialState = {
     },
     CartState: {
         InCart: [],
-        ShowCartList: false
+        ShowCartList: true
     }
 };
 

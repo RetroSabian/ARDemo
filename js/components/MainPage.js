@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { ViroARSceneNavigator } from 'react-viro';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import * as Constants from '../Constants/constant';
 import Display from './ARDisplay';
 import ARInitializationUI from './ARInitializationUI';
 import CartList from './CartList';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Style } from '../Constants/styleConstants';
 
 class MainPage extends Component {
     constructor(props) {
@@ -20,9 +21,9 @@ class MainPage extends Component {
                     initialScene={{ scene: Display }} />
                 <ARInitializationUI style={localStyles.initializationUI}/>
                 {this.props.CartState.ShowCartList ?   
-                    <View style={localStyles.listView}>
+                    <ScrollView horizontal="true" overScrollMode="always" style = {Style.listView}> 
                         <CartList/>
-                    </View> : null}  
+                    </ScrollView> : null }
             </View>
         );
     }

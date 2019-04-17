@@ -1,10 +1,12 @@
 import * as Types from './CartActionTypes';
 import * as Constants from '../../Constants/constant';
 
-export const ToggleCart = (flag) => dispatch => dispatch(ToggleCartAC(flag));
+export const ToggleCart = (flag) => dispatch => {
+    dispatch(ToggleCartAC(flag));
+};
 
-export const AddToCartNew = (array, name, price) => (dispatch) => {
-    const value = array.push({ 'name': name, 'price': price, 'qty': Constants.one });
+export const AddToCartNew = (array, name, source, price) => (dispatch) => {
+    const value = array.push({ 'name': name, 'source': source, 'price': price, 'qty': Constants.one });
     dispatch(AddToCartAC(value));
 };
 

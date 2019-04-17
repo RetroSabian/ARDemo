@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import {
     ViroARScene,
-    ViroConstants,
     ViroAmbientLight,
     ViroARImageMarker,
     ViroNode,
     Viro3DObject,
     ViroARTrackingTargets,
-    ViroText,
-    ViroMaterials,
     ViroAnimations
 } from 'react-viro';
 import { connect } from 'react-redux';
@@ -17,12 +14,10 @@ import * as UiActions from '../redux/UI/UIActions';
 import * as CartActions from '../redux/Cart/CartActions';
 import Cart from '../res/Cart/cart.obj';
 import * as Constants from '../Constants/constant';
-import { Style } from '../Constants/styleConstants';
 import PropTypes from 'prop-types';
-import { ProductArray } from '../Constants/ProductConstants';
-import CatelogDisplay from './CatelogScanner';
+import { CatelogArray } from '../Constants/catelogConstant';
 
-class ARDisplay extends Component {
+class CatelogScanner extends Component {
     constructor() {
         super();
         this.state = {
@@ -33,7 +28,6 @@ class ARDisplay extends Component {
         this._onAnchorFound = this._onAnchorFound.bind(this);
         this._onAnimationFinished = this._onAnimationFinished.bind(this);
         this.handleclick = this.handleclick.bind(this);
-        this._onTrackingUpdated = this._onTrackingUpdated.bind(this);
     }
 
     _onAnimationFinished(){
@@ -57,31 +51,14 @@ class ARDisplay extends Component {
         alert('found');
     }
 
-    _onTrackingUpdated(state) {
-        let trackingNormal = false;
-        if (state === ViroConstants.TRACKING_NORMAL) {
-            trackingNormal = true;
-        } 
-        this.props.uiActions.ARTrackingInitialized(trackingNormal);
-    }
     render() {
         
-        return <ViroARScene onTrackingUpdated= {this._onTrackingUpdated}>
+        return <ViroARScene>
             <ViroAmbientLight color="#ffffff" intensity={200}/>
             {
-                ProductArray.map((product, index) => <ViroARImageMarker target={product.concatName} onAnchorFound={this._onAnchorFound} key={index}> 
-                    <ViroText 
-                        fontSize={12}
-                        style={Style.ProductName} 
-                        position={[ Constants.zero, Constants.zero, Constants.negativeFive ]}
-                        width={15} 
-                        height={5} 
-                        extrusionDepth={8}
-                        materials={[ 'frontMaterial', 'backMaterial', 'sideMaterial' ]}
-                        text= {product.name} 
-                    />
+                CatelogArray.map((product, index) => <ViroARImageMarker target={product.concatName} onAnchorFound={this._onAnchorFound} key={index}> 
                     <ViroNode
-                        position={[ Constants.pointOne, Constants.pointOne, Constants.zero ]}>
+                        position={[ Constants.zero, Constants.zero, Constants.zero ]}>
                         <Viro3DObject
                             onClick={() => this.handleclick(product.name, product.source,product.price)}
                             scale={[ Constants.one, Constants.one , Constants.one ]}
@@ -91,13 +68,12 @@ class ARDisplay extends Component {
                     </ViroNode>
                 </ViroARImageMarker>) 
             }
-            <CatelogDisplay/>
         </ViroARScene>;
     }
 }
  
 ViroARTrackingTargets.createTargets(
-    ProductArray.reduce((accObject, product) => {
+    CatelogArray.reduce((accObject, product) => {
         accObject[product.concatName] = {
             source: product.source,
             orientation: product.orientation,
@@ -114,7 +90,7 @@ ViroAnimations.registerAnimations({
         duration: 500 }
 });
 
-ARDisplay.propTypes = {
+CatelogScanner.propTypes = {
     uiActions: PropTypes.shape({
         ARTrackingInitialized: PropTypes.func
     }),
@@ -127,18 +103,6 @@ ARDisplay.propTypes = {
     })
 };
 
-ViroMaterials.createMaterials({
-    frontMaterial: {
-        diffuseColor: '#FFFFFF',
-    },
-    backMaterial: {
-        diffuseColor: '#FF0000',
-    },
-    sideMaterial: {
-        diffuseColor: '#0000FF',
-    },
-});
-
 const mapStateToProps = (state) => ({
     UIState: state.UIState,
     CartState: state.CartState
@@ -149,4 +113,4 @@ const mapActionsToProps = (dispatch) => ({
     cartActions: bindActionCreators(CartActions, dispatch)
 });
 
-export default connect(mapStateToProps, mapActionsToProps)(ARDisplay);
+export default connect(mapStateToProps, mapActionsToProps)(CatelogScanner);
