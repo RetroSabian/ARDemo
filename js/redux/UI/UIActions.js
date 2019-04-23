@@ -1,12 +1,15 @@
 import * as Types from './UIActionTypes';
 
-export const ARTrackingInitialized = (value) => (dispatch) => dispatch(ARTrackingInitializedAC(value));
+export const ARTrackingInitialized = (flag) => (dispatch) => {
+    //console here shows flag changes, dispatch doesnt change state
+    dispatch(ARTrackingInitializedAC(flag));
+};
 
-export const ARTrackingInitializedAC = (value) => {
+export const ARTrackingInitializedAC = (flag) => {
     return {
         type: Types.AR_TRACKING_INITIALIZED,
         UIState: {
-            TrackerInitialized: value
+            TrackerInitialized: flag
         }
     };
 };
