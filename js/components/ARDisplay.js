@@ -15,6 +15,7 @@ import {
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as UiActions from '../redux/UI/UIActions';
+import * as CartActions from '../redux/Cart/CartActions';
 import Cart from '../res/Cart/cart.obj';
 import Rating from '../res/Cart/Star.obj';
 import RatingColor from '../res/Cart/object_star_specular.png';
@@ -22,13 +23,13 @@ import * as Constants from '../Constants/constant';
 import { Style } from '../Constants/styleConstants';
 import PropTypes from 'prop-types';
 import { ProductArray } from '../Constants/ProductConstants';
+import CatelogDisplay from './CatelogScanner';
 
 class ARDisplay extends Component {
     constructor() {
         super();
         this.state = {
             text: 'Initializing AR...',
-            playAnim: false,
             animate: false,
             animationType: 'spawn'
         };
@@ -45,8 +46,12 @@ class ARDisplay extends Component {
         });
     }
 
-    handleclick(){
-        alert('On Click Event');  
+    handleclick(name, source, price){
+        if (this.props.CartState.InCart.find(product => product.name === name)) {
+            this.props.cartActions.AddToCartExists(this.props.CartState.InCart, name);
+        } else {
+            this.props.cartActions.AddToCartNew(this.props.CartState.InCart, name, source, price);
+        }
     }
 
     _onAnchorFound() {
@@ -128,14 +133,15 @@ class ARDisplay extends Component {
                     <ViroNode
                         position={[ Constants.pointOne, Constants.pointOne, Constants.zero ]}>
                         <Viro3DObject
-                            onClick={this.handleclick}
-                            scale={[ Constants.one, Constants.zero, Constants.one ]}
+                            onClick={() => this.handleclick(product.name, product.source,product.price)}
+                            scale={[ Constants.one, Constants.one , Constants.one ]}
                             source={Cart}
                             type="OBJ"
                             animation={{ name: this.state.animationType, run: this.state.animate, loop: true, onFinish: this._onAnimationFinished }} />
                     </ViroNode>
                 </ViroARImageMarker>) 
             }
+            <CatelogDisplay/>
         </ViroARScene>;
     }
 }
@@ -161,6 +167,13 @@ ViroAnimations.registerAnimations({
 ARDisplay.propTypes = {
     uiActions: PropTypes.shape({
         ARTrackingInitialized: PropTypes.func
+    }),
+    cartActions: PropTypes.shape({
+        AddToCartNew: PropTypes.func,
+        AddToCartExists: PropTypes.func
+    }),
+    CartState: PropTypes.shape({
+        InCart: PropTypes.array
     })
 };
 
@@ -177,11 +190,13 @@ ViroMaterials.createMaterials({
 });
 
 const mapStateToProps = (state) => ({
-    UIState: state.UIState
+    UIState: state.UIState,
+    CartState: state.CartState
 });
 
 const mapActionsToProps = (dispatch) => ({
-    uiActions: bindActionCreators(UiActions, dispatch)
+    uiActions: bindActionCreators(UiActions, dispatch),
+    cartActions: bindActionCreators(CartActions, dispatch)
 });
 
 export default connect(mapStateToProps, mapActionsToProps)(ARDisplay);
