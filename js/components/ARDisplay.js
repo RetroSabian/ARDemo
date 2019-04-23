@@ -9,6 +9,7 @@ import {
     ViroARTrackingTargets,
     ViroText,
     ViroMaterials,
+    ViroVideo,
     ViroAnimations
 } from 'react-viro';
 import { connect } from 'react-redux';
@@ -16,6 +17,7 @@ import { bindActionCreators } from 'redux';
 import * as UiActions from '../redux/UI/UIActions';
 import Cart from '../res/Cart/cart.obj';
 import Rating from '../res/Cart/Star.obj';
+import RatingColor from '../res/Cart/object_star_specular.png';
 import * as Constants from '../Constants/constant';
 import { Style } from '../Constants/styleConstants';
 import PropTypes from 'prop-types';
@@ -72,6 +74,7 @@ class ARDisplay extends Component {
                     rotation={[ Constants.negativeNinety, Constants.zero, Constants.zero ]}
                     scale={[ Constants.one, Constants.zero, Constants.one ]}
                     source={Rating}
+                    resources={ [ RatingColor ]}
                     type="OBJ"
                     animation={{ name: this.state.animationType, run: this.state.animate, loop: true, onFinish: this._onAnimationFinished }}
                     
@@ -89,7 +92,9 @@ class ARDisplay extends Component {
             
         return <ViroARScene onTrackingUpdated= {this._onTrackingUpdated}>
             <ViroAmbientLight color="#ffffff" intensity={200}/>
+
             {
+                
                 ProductArray.map((product, index) => <ViroARImageMarker target={product.concatName} onAnchorFound={this._onAnchorFound} key={index}> 
                     <ViroText 
                         fontSize={12}
@@ -112,6 +117,14 @@ class ARDisplay extends Component {
                         text={'R' + product.price.toLocaleString()} 
                     />
                     {this._rating(product.rating)}
+                    <ViroVideo
+                        source={require('../res/Videos/hands.mp4')}
+                        height={2}
+                        width={2}
+                        border={2}
+                        loop={true}
+                        position={[ -2,Constants.zero,-5]}
+                    /> 
                     <ViroNode
                         position={[ Constants.pointOne, Constants.pointOne, Constants.zero ]}>
                         <Viro3DObject
