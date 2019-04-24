@@ -1,5 +1,6 @@
 import RomanyCreamsImage from '../res/Markers/Romany.jpg';
 import KelloggsImage from '../res/Markers/SpecialK.jpg';
+import advert from '../res/Videos/hands.mp4';
 
 export const ProductArray = [
     {
@@ -9,7 +10,8 @@ export const ProductArray = [
         source: RomanyCreamsImage,
         orientation: 'Up',
         physicalWidth: 0.15,
-        rating: 3
+        rating: 3,
+        advert: advert
     },
     {
         name: 'Special K Red Berries Cereal Bars',
@@ -18,6 +20,7 @@ export const ProductArray = [
         source: KelloggsImage,
         orientation: 'Up',
         physicalWidth: 0.18,
-        rating: 5
+        rating: 5,
+        advert: advert
     }
 ];

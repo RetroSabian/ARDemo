@@ -19,7 +19,6 @@ class MainPage extends Component {
             <View style={localStyles.flex}>
                 <ViroARSceneNavigator apiKey = {Constants.apiKey}
                     initialScene={{ scene: Display }} />
-                <ARInitializationUI style={localStyles.initializationUI}/>
                 {this.props.CartState.ShowCartList ?   
                     <ScrollView horizontal="true" overScrollMode="always" style = {Style.listView}> 
                         <CartList/>

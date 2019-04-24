@@ -6,6 +6,7 @@ import {
     ViroARImageMarker,
     ViroNode,
     Viro3DObject,
+    ViroFlexView,
     ViroARTrackingTargets,
     ViroText,
     ViroMaterials,
@@ -18,12 +19,12 @@ import * as UiActions from '../redux/UI/UIActions';
 import * as CartActions from '../redux/Cart/CartActions';
 import Cart from '../res/Cart/cart.obj';
 import Rating from '../res/Cart/Star.obj';
-import RatingColor from '../res/Cart/object_star_specular.png';
 import * as Constants from '../Constants/constant';
 import { Style } from '../Constants/styleConstants';
 import PropTypes from 'prop-types';
 import { ProductArray } from '../Constants/ProductConstants';
 import CatelogDisplay from './CatelogScanner';
+import constants from 'jest-haste-map/build/constants';
 
 class ARDisplay extends Component {
     constructor() {
@@ -72,16 +73,17 @@ class ARDisplay extends Component {
         let myloop = [];     
         for (let i = 0; i < rating; i++) {
             let val = 1;
-            val = val + i;
+            val = val + i * 0.5;
+            moveBack = rating * 0.25 - 0.25; 
             myloop.push(
                 <Viro3DObject key={i}
-                    position={[ Constants.one + val, Constants.zero, Constants.negativeFive ]}
-                    rotation={[ Constants.negativeNinety, Constants.zero, Constants.zero ]}
-                    scale={[ Constants.one, Constants.zero, Constants.one ]}
+                    position={[ Constants.zero + val - moveBack, -0.01, Constants.negativeFive ]}
+                    rotation={[ 90, Constants.zero, Constants.zero ]}
+                    scale={[ 0.03, 0.03, 0.03 ]}
                     source={Rating}
-                    resources={ [ RatingColor ]}
+                    materials={[ 'rating']}
                     type="OBJ"
-                    animation={{ name: this.state.animationType, run: this.state.animate, loop: true, onFinish: this._onAnimationFinished }}
+                    animation={{ name: 'rotation', run: this.state.animate, loop: true }}
                     
                 />
             );
@@ -95,16 +97,24 @@ class ARDisplay extends Component {
     }
     render() {
             
-        return <ViroARScene onTrackingUpdated= {this._onTrackingUpdated}>
+        return <ViroARScene>
             <ViroAmbientLight color="#ffffff" intensity={200}/>
 
             {
                 
                 ProductArray.map((product, index) => <ViroARImageMarker target={product.concatName} onAnchorFound={this._onAnchorFound} key={index}> 
+                    <ViroVideo
+                        source={product.advert}
+                        height={2}
+                        width={2}
+                        border={2}
+                        loop={true}
+                        position={[ -1.5,Constants.zero,-5]}
+                    /> 
                     <ViroText 
                         fontSize={12}
                         style={Style.ProductName} 
-                        position={[ Constants.zero, Constants.zero, Constants.negativeFive ]}
+                        position={[ Constants.one, Constants.one, Constants.negativeFive ]}
                         width={15} 
                         height={5} 
                         extrusionDepth={8}
@@ -114,22 +124,37 @@ class ARDisplay extends Component {
                     <ViroText 
                         fontSize={12}
                         style={Style.ProductName} 
-                        position={[ Constants.one, Constants.zero, Constants.negativeFive ]}
+                        position={[ Constants.one,0.5, Constants.negativeFive ]}
                         width={15} 
                         height={5} 
                         extrusionDepth={8}
                         materials={[ 'frontMaterial', 'backMaterial', 'sideMaterial' ]}
                         text={'R' + product.price.toLocaleString()} 
                     />
-                    {this._rating(product.rating)}
-                    <ViroVideo
-                        source={require('../res/Videos/hands.mp4')}
-                        height={2}
-                        width={2}
-                        border={2}
-                        loop={true}
-                        position={[ -2,Constants.zero,-5]}
+                    <ViroText 
+                        position={[ 0, -1.0, Constants.zero ]}
+                        rotation={[ -90, Constants.zero, Constants.zero ]}
+                        text={product.name} 
+                        width={2} height={2}
+                        style={{fontFamily:"Arial", fontSize:10, fontStyle:"italic", color:"#0000FF"}}
                     /> 
+                    {/* <ViroText fontSize={1}
+                        position={[0,-1, Constants.zero ]}
+                        rotation={[ -90, Constants.zero, Constants.zero ]}
+                        text={product.name} 
+                        textAlign="left"
+                        textAlignVertical="top"
+                        textLineBreakMode="justify"
+                        textClipMode="clipToBounds"
+                        color="#ff0000"
+                        width={2} height={2}
+                        style={{fontFamily:"Arial", fontSize:20, fontStyle:"italic", color:"#0000FF"}}
+
+                    /> */}
+                    
+                    {this._rating(product.rating)}
+
+                          
                     <ViroNode
                         position={[ Constants.pointOne, Constants.pointOne, Constants.zero ]}>
                         <Viro3DObject
@@ -137,7 +162,8 @@ class ARDisplay extends Component {
                             scale={[ Constants.one, Constants.one , Constants.one ]}
                             source={Cart}
                             type="OBJ"
-                            animation={{ name: this.state.animationType, run: this.state.animate, loop: true, onFinish: this._onAnimationFinished }} />
+                            animation={{ name: this.state.animationType, run: this.state.animate, loop: true, onFinish: this._onAnimationFinished }} 
+                        />
                     </ViroNode>
                 </ViroARImageMarker>) 
             }
@@ -186,6 +212,9 @@ ViroMaterials.createMaterials({
     },
     sideMaterial: {
         diffuseColor: '#0000FF',
+    },
+    rating: {
+        diffuseColor: '#D4AF37',
     },
 });
 
